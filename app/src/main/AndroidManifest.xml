@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spotify">
-        <activity android:name=".Search"></activity>
+        <activity android:name=".Search" />
         <activity android:name=".Playlist" />
         <activity android:name=".Player" />
-        <activity android:name=".Discover">
+        <activity android:name=".Discover" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
