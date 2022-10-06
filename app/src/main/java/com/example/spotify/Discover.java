@@ -42,9 +42,6 @@ public class Discover extends AppCompatActivity {
 
                     // Now you can start interacting with App Remote
                     connected();
-
-
-
                 }
 
                 public void onFailure(Throwable throwable) {
@@ -63,9 +60,13 @@ public class Discover extends AppCompatActivity {
 
     private void connected() {
         // Play a playlist
-        String playlist1 = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
-        mSpotifyAppRemote.getPlayerApi().play(playlist1);
-        Player player = new Player(playlist1);
+        String Anemone = "spotify:playlist:1hDlM5sdPdYYEcFonmPyZR";
+        String Sunflower = "spotify:playlist:5oFH9pWSUhHUOG40c38oyS";
+        String Cuphea = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
+        String Dianthus = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
+
+        mSpotifyAppRemote.getPlayerApi().play(Dianthus);
+        Player player = new Player(Dianthus);
 
         // Subscribe to PlayerState
         mSpotifyAppRemote.getPlayerApi()
