@@ -9,36 +9,29 @@
     android:orientation="vertical"
     tools:context=".Discover">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/amatica_sc"
-        android:text="DISCOVER"
-        android:textAlignment="center"
-        android:textSize="45sp"
-        android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/discover" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/cuphea"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:adjustViewBounds="false"
             android:backgroundTint="#D1C6B6"
-            android:cropToPadding="false"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/c_cuphea" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/anemone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -50,11 +43,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+        android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/dianthus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,13 +55,60 @@
             app:srcCompat="@drawable/c_dianthus" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/sunflower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="#d1c6b6"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/c_sunflower" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/player"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:background="@drawable/background"
+        android:backgroundTint="#00FFFFFF"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/imageButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            android:maxWidth="75dp"
+            android:maxHeight="75dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/home" />
+
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            android:maxWidth="75dp"
+            android:maxHeight="75dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/music" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            android:maxWidth="75dp"
+            android:maxHeight="75dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/search" />
+
     </LinearLayout>
 
 </LinearLayout>

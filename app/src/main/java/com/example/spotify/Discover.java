@@ -3,6 +3,9 @@ package com.example.spotify;
 import android.os.Bundle;
 
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,9 +23,30 @@ public class Discover extends AppCompatActivity {
     private static final String REDIRECT_URI = "com.example.spotify://callback";
     private SpotifyAppRemote mSpotifyAppRemote;
 
+    ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous;
+    LinearLayout player;
+    String playing = "";
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        dianthus = findViewById(R.id.dianthus);
+        sunflower = findViewById(R.id.sunflower);
+        cuphea = findViewById(R.id.cuphea);
+        anemone = findViewById(R.id.anemone);
+        pause = findViewById(R.id.pause);
+
+        player = findViewById(R.id.player);
+
+        Ecouteur ec = new Ecouteur();
+
+        dianthus.setOnClickListener(ec);
+        sunflower.setOnClickListener(ec);
+        cuphea.setOnClickListener(ec);
+        anemone.setOnClickListener(ec);
+        pause.setOnClickListener(ec);
+
+
     }
 
     @Override
@@ -59,14 +83,8 @@ public class Discover extends AppCompatActivity {
     }
 
     private void connected() {
-        // Play a playlist
-        String Anemone = "spotify:playlist:1hDlM5sdPdYYEcFonmPyZR";
-        String Sunflower = "spotify:playlist:5oFH9pWSUhHUOG40c38oyS";
-        String Cuphea = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
-        String Dianthus = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
-
-        mSpotifyAppRemote.getPlayerApi().play(Dianthus);
-        Player player = new Player(Dianthus);
+        mSpotifyAppRemote.getPlayerApi().play(playing);
+        Player player = new Player(playing);
 
         // Subscribe to PlayerState
         mSpotifyAppRemote.getPlayerApi()
@@ -77,5 +95,20 @@ public class Discover extends AppCompatActivity {
                     Log.d("MainActivity", track.name + " by " + track.artist.name);
                 }
             });
+    }
+
+    private class Ecouteur implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (v == anemone)
+                playing = "spotify:playlist:1hDlM5sdPdYYEcFonmPyZR";
+            else if (v == sunflower)
+                playing = "spotify:playlist:5oFH9pWSUhHUOG40c38oyS";
+            else if (v == cuphea)
+                playing = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
+            else if (v == dianthus)
+                playing = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
+
+        }
     }
 }
