@@ -7,7 +7,20 @@
     android:background="#FFFFFF"
     android:backgroundTint="#D1C6B6"
     android:orientation="vertical"
+    android:configChanges="keyboardHidden|orientation|screenSize"
     tools:context=".Search">
+
+    <EditText
+        android:id="@+id/searchbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="65dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="65dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Search"
+        android:textAlignment="textStart" />
 
     <LinearLayout
         android:id="@+id/player"
@@ -19,7 +32,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/discoverS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,7 +44,7 @@
             app:srcCompat="@drawable/home" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/infoS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,7 +56,7 @@
             app:srcCompat="@drawable/music" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/searchS"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

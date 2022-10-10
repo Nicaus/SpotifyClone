@@ -7,6 +7,7 @@
     android:background="#FFFFFF"
     android:backgroundTint="#D1C6B6"
     android:orientation="vertical"
+    android:configChanges="keyboardHidden|orientation|screenSize"
     tools:context=".Playlist">
 
     <LinearLayout
@@ -19,7 +20,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/discoverD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -43,7 +44,7 @@
             app:srcCompat="@drawable/music" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/searchD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

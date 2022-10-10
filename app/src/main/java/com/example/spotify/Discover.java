@@ -1,7 +1,7 @@
 package com.example.spotify;
 
+import android.content.Intent;
 import android.os.Bundle;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -13,9 +13,9 @@ import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
-import com.spotify.protocol.client.Subscription;
-import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
+
+import java.io.Serializable;
 
 public class Discover extends AppCompatActivity {
 
@@ -23,18 +23,22 @@ public class Discover extends AppCompatActivity {
     private static final String REDIRECT_URI = "com.example.spotify://callback";
     private SpotifyAppRemote mSpotifyAppRemote;
 
-    ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous;
+    ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous, home, info, search;
     LinearLayout player;
-    String playing = "";
+    String playlistplaying;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_discover);
         dianthus = findViewById(R.id.dianthus);
         sunflower = findViewById(R.id.sunflower);
         cuphea = findViewById(R.id.cuphea);
         anemone = findViewById(R.id.anemone);
-        pause = findViewById(R.id.pause);
+
+        home = findViewById(R.id.discoverD);
+        info = findViewById(R.id.infoD);
+        search = findViewById(R.id.searchD);
+//        pause = findViewById(R.id.pause);
 
         player = findViewById(R.id.player);
 
@@ -44,9 +48,20 @@ public class Discover extends AppCompatActivity {
         sunflower.setOnClickListener(ec);
         cuphea.setOnClickListener(ec);
         anemone.setOnClickListener(ec);
-        pause.setOnClickListener(ec);
 
+        home.setOnClickListener(ec);
+        info.setOnClickListener(ec);
+        search.setOnClickListener(ec);
 
+//        pause.setOnClickListener(ec);
+    }
+
+    public static String getClientId() {
+        return CLIENT_ID;
+    }
+
+    public static String getRedirectUri() {
+        return REDIRECT_URI;
     }
 
     @Override
@@ -63,9 +78,6 @@ public class Discover extends AppCompatActivity {
                 public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                     mSpotifyAppRemote = spotifyAppRemote;
                     Log.d("MainActivity", "Connected! Yay!");
-
-                    // Now you can start interacting with App Remote
-                    connected();
                 }
 
                 public void onFailure(Throwable throwable) {
@@ -80,12 +92,10 @@ public class Discover extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
+//        mSpotifyAppRemote.getPlayerApi().pause();
     }
 
     private void connected() {
-        mSpotifyAppRemote.getPlayerApi().play(playing);
-        Player player = new Player(playing);
-
         // Subscribe to PlayerState
         mSpotifyAppRemote.getPlayerApi()
             .subscribeToPlayerState()
@@ -100,15 +110,27 @@ public class Discover extends AppCompatActivity {
     private class Ecouteur implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            if (v == anemone)
-                playing = "spotify:playlist:1hDlM5sdPdYYEcFonmPyZR";
-            else if (v == sunflower)
-                playing = "spotify:playlist:5oFH9pWSUhHUOG40c38oyS";
-            else if (v == cuphea)
-                playing = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
-            else if (v == dianthus)
-                playing = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
 
+            if (v == anemone)
+                playlistplaying = "spotify:playlist:1hDlM5sdPdYYEcFonmPyZR";
+            else if (v == sunflower)
+                playlistplaying = "spotify:playlist:5oFH9pWSUhHUOG40c38oyS";
+            else if (v == cuphea)
+                playlistplaying = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
+            else if (v == dianthus)
+                playlistplaying = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
+            mSpotifyAppRemote.getPlayerApi().play(playlistplaying);
+            connected();
+
+            if (v == info){
+                Intent intent = new Intent(Discover.this, Player.class);
+                intent.putExtra("uri", playlistplaying);
+                startActivity(intent);
+            }
+            else if (v == search){
+                Intent intent = new Intent(Discover.this, Search.class);
+                startActivity(intent);
+            }
         }
     }
 }

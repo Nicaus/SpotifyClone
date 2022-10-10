@@ -7,6 +7,7 @@
     android:background="#FFFFFF"
     android:backgroundTint="#D1C6B6"
     android:orientation="vertical"
+    android:configChanges="keyboardHidden|orientation|screenSize"
     tools:context=".Player">
 
     <LinearLayout
@@ -29,27 +30,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:fontFamily="@font/lemarism_regular"
             android:text="[AlbumName]"
             android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/artistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:fontFamily="@font/lemarism_regular"
             android:text="[ArtistName]"
             android:textAlignment="center"
-            android:textSize="18sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/songName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0"
+            android:fontFamily="@font/lemarism_regular"
             android:text="[SongName]"
             android:textAlignment="center"
-            android:textSize="30sp" />
+            android:textSize="36sp" />
 
         <SeekBar
             android:id="@+id/seekBar"
@@ -105,7 +109,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/discoverP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -117,7 +121,7 @@
             app:srcCompat="@drawable/home" />
 
         <ImageButton
-            android:id="@+id/imageButton4"
+            android:id="@+id/infoP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -129,7 +133,7 @@
             app:srcCompat="@drawable/music" />
 
         <ImageButton
-            android:id="@+id/imageButton2"
+            android:id="@+id/searchP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
