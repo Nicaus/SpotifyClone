@@ -58,6 +58,8 @@ public class Player extends AppCompatActivity {
         home.setOnClickListener(ec);
         search.setOnClickListener(ec);
         pause.setOnClickListener(ec);
+        next.setOnClickListener(ec);
+        back.setOnClickListener(ec);
 
 
         ConnectionParams connectionParams =
@@ -94,16 +96,14 @@ public class Player extends AppCompatActivity {
             }
 
             if (v == pause){
-//                if (!playing) {
-//                    mSpotifyAppRemote.getPlayerApi().pause();
-//                    playing = true;
-//                }
-//                else {
-//                    mSpotifyAppRemote.getPlayerApi().play(uri);
-//                    playing = false;
-//                }
                 sd.playPause(playing, uri, mSpotifyAppRemote);
                 playing = !playing;
+            }
+            else if (v == next){
+                sd.next(mSpotifyAppRemote);
+            }
+            else if (v == back){
+                sd.previous(mSpotifyAppRemote);
             }
         }
     }

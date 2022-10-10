@@ -20,37 +20,7 @@ import com.spotify.protocol.types.ImageUri;
 import java.util.Vector;
 
 public class SpotifyDiffuseur extends AppCompatActivity {
-    PlayerApi playerApi;
-    ImagesApi imagesApi;
-    Discover discover;
-    SpotifyAppRemote mSpotifyAppRemote;
-    Context context;
-
     public SpotifyDiffuseur(){}
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ConnectionParams connectionParams =
-                new ConnectionParams.Builder(Discover.getClientId())
-                        .setRedirectUri(Discover.getRedirectUri())
-                        .showAuthView(true)
-                        .build();
-
-        SpotifyAppRemote.connect(this, connectionParams,
-                new Connector.ConnectionListener() {
-                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
-                        mSpotifyAppRemote = spotifyAppRemote;
-                        Log.d("MainActivity", "Connected! Yay!");
-                    }
-
-                    public void onFailure(Throwable throwable) {
-                        Log.e("MyActivity", throwable.getMessage(), throwable);
-
-                        // Something went wrong when attempting to connect! Handle errors here
-                    }
-                });
-    }
 
     public void playPause(boolean b, String string, SpotifyAppRemote s){
         if (!b) {
@@ -61,20 +31,20 @@ public class SpotifyDiffuseur extends AppCompatActivity {
         }
     }
 
-    public void next(){
-        mSpotifyAppRemote.getPlayerApi().skipNext();
+    public void next(SpotifyAppRemote s){
+        s.getPlayerApi().skipNext();
     }
 
-    public void previous(){
-        mSpotifyAppRemote.getPlayerApi().skipPrevious();
+    public void previous(SpotifyAppRemote s){
+        s.getPlayerApi().skipPrevious();
     }
 
-    public void seek(long pos){
-        mSpotifyAppRemote.getPlayerApi().seekTo(pos);
+    public void seek(SpotifyAppRemote s, long pos){
+        s.getPlayerApi().seekTo(pos);
     }
 
-    public CallResult<Bitmap> getImagesApi(ImageUri albumCover) {
-        return mSpotifyAppRemote.getImagesApi().getImage(albumCover);
+    public CallResult<Bitmap> getImagesApi(SpotifyAppRemote s, ImageUri albumCover) {
+        return s.getImagesApi().getImage(albumCover);
     }
 
     public String musicInfo(){
