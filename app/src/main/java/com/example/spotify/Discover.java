@@ -11,25 +11,34 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.ContentApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 
 import com.spotify.protocol.types.Track;
-
-import java.io.Serializable;
 
 public class Discover extends AppCompatActivity {
 
     private static final String CLIENT_ID = "71e79d50360c4f14adca4221e2bf605b";
     private static final String REDIRECT_URI = "com.example.spotify://callback";
     private SpotifyAppRemote mSpotifyAppRemote;
+    SpotifyDiffuseur sd;
+    Track tracks;
+    String name, artist, album;
+    Player p;
 
     ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous, home, info, search;
     LinearLayout player;
     String playlistplaying;
 
+    public Discover(){}
+    public Discover(Player p){
+        this.p = p;
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
+
         dianthus = findViewById(R.id.dianthus);
         sunflower = findViewById(R.id.sunflower);
         cuphea = findViewById(R.id.cuphea);
@@ -52,8 +61,6 @@ public class Discover extends AppCompatActivity {
         home.setOnClickListener(ec);
         info.setOnClickListener(ec);
         search.setOnClickListener(ec);
-
-//        pause.setOnClickListener(ec);
     }
 
     public static String getClientId() {
@@ -67,6 +74,7 @@ public class Discover extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         ConnectionParams connectionParams =
             new ConnectionParams.Builder(CLIENT_ID)
                 .setRedirectUri(REDIRECT_URI)
@@ -78,11 +86,14 @@ public class Discover extends AppCompatActivity {
                 public void onConnected(SpotifyAppRemote spotifyAppRemote) {
                     mSpotifyAppRemote = spotifyAppRemote;
                     Log.d("MainActivity", "Connected! Yay!");
+
+                    sd = new SpotifyDiffuseur();
+                    connected();
+                    mSpotifyAppRemote.getPlayerApi().pause();
                 }
 
                 public void onFailure(Throwable throwable) {
                     Log.e("MyActivity", throwable.getMessage(), throwable);
-
                     // Something went wrong when attempting to connect! Handle errors here
                 }
             });
@@ -92,7 +103,6 @@ public class Discover extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         SpotifyAppRemote.disconnect(mSpotifyAppRemote);
-//        mSpotifyAppRemote.getPlayerApi().pause();
     }
 
     private void connected() {
@@ -103,14 +113,18 @@ public class Discover extends AppCompatActivity {
                 final Track track = playerState.track;
                 if (track != null) {
                     Log.d("MainActivity", track.name + " by " + track.artist.name);
+                    name = track.name;
+                    artist = track.artist.name;
+                    album = track.album.name;
                 }
             });
+
     }
+
 
     private class Ecouteur implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
             if (v == anemone)
                 playlistplaying = "spotify:playlist:1hDlM5sdPdYYEcFonmPyZR";
             else if (v == sunflower)
@@ -120,11 +134,14 @@ public class Discover extends AppCompatActivity {
             else if (v == dianthus)
                 playlistplaying = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
             mSpotifyAppRemote.getPlayerApi().play(playlistplaying);
-            connected();
 
             if (v == info){
                 Intent intent = new Intent(Discover.this, Player.class);
                 intent.putExtra("uri", playlistplaying);
+                intent.putExtra("name", name);
+                intent.putExtra("artist", artist);
+                intent.putExtra("album", album);
+
                 startActivity(intent);
             }
             else if (v == search){

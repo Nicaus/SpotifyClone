@@ -16,10 +16,15 @@ import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.ImageUri;
+import com.spotify.protocol.types.PlayerState;
+import com.spotify.protocol.types.Track;
 
 import java.util.Vector;
 
 public class SpotifyDiffuseur extends AppCompatActivity {
+    private String musicInfo, artistInfo, albumInfo;
+    Track tracks;
+
     public SpotifyDiffuseur(){}
 
     public void playPause(boolean b, String string, SpotifyAppRemote s){
@@ -43,24 +48,37 @@ public class SpotifyDiffuseur extends AppCompatActivity {
         s.getPlayerApi().seekTo(pos);
     }
 
-    public CallResult<Bitmap> getImagesApi(SpotifyAppRemote s, ImageUri albumCover) {
+        //GET
+    public CallResult<Bitmap> getAlbumArt(SpotifyAppRemote s, ImageUri albumCover) {
         return s.getImagesApi().getImage(albumCover);
     }
 
-    public String musicInfo(){
-
-        return "";
+    public String getMusicInfo(){
+        return musicInfo;
     }
 
-    public String artistInfo(){
-
-        return "";
+    public String getArtistInfo() {
+        return artistInfo;
     }
 
-    public String albumInfo(){
-
-        return "";
+    public String getAlbumInfo() {
+        return albumInfo;
     }
+
+
+        //SET
+    public void setMusicInfo(String musicInfo) {
+        this.musicInfo = musicInfo;
+    }
+
+    public void setArtistInfo(String artistInfo) {
+        this.artistInfo = artistInfo;
+    }
+
+    public void setAlbumInfo(String albumInfo) {
+        this.albumInfo = albumInfo;
+    }
+
 
     public Vector<String> songInfo(){
 
