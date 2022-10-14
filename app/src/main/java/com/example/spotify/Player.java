@@ -12,25 +12,19 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.spotify.android.appremote.api.PlayerApi;
-import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.PlayerState;
 
 public class Player extends AppCompatActivity {
 
-    Control control;
-
-    ImageView album_cover;
-    ImageButton pause, back, next, home, search;
+    ImageView albumCover;
+    ImageButton shuffle, pause, back, next, replay, home, search;
     SeekBar progress;
     TextView songText, albumText, artistText;
     Bitmap bitmap;
-    Discover discover;
     SpotifyDiffuseur sd;
 
-    private Boolean playing = false;
-    private String uri = "", songName, artistName, albumName;
-    PlayerApi playerApi;
+    Boolean playing = true, shuffled = false, replayed = false, first = true;
+    private String uri = "";
 
 
     @Override
@@ -38,19 +32,20 @@ public class Player extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        //btn pour le controle
+        //btn pour les controles
+        shuffle = findViewById(R.id.shufflebtn);
         pause = findViewById(R.id.pausebtn);
         back = findViewById(R.id.previousbtn);
         next = findViewById(R.id.nextbtn);
-
+        replay = findViewById(R.id.replaybtn);
 
         //info sur la chanson
-        album_cover = findViewById(R.id.imageView);
+        albumCover = findViewById(R.id.imageView);
         songText = findViewById(R.id.songName);
         albumText = findViewById(R.id.albumName);
         artistText = findViewById(R.id.artistName);
 
-        //bottombar
+        //nav bar
         home = findViewById(R.id.discoverP);
         search = findViewById(R.id.searchP);
         progress = findViewById(R.id.seekBar);
@@ -59,12 +54,8 @@ public class Player extends AppCompatActivity {
         Bundle i = getIntent().getExtras();
         uri = (String) i.get("uri");
         sd = new SpotifyDiffuseur(this);
-//        sd.connected();
 
-//        songName = (String) i.get("name");
-//        artistName = (String) i.get("artist");
-//        albumName = (String) i.get("album");
-
+        //chaque playlist a sa propre image (la fleur fleurise)
         if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_anemone);
         if (uri.equals("spotify:playlist:5niTVBcBMAezwE2Z65P0ME"))
@@ -73,23 +64,21 @@ public class Player extends AppCompatActivity {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_dianthus);
         if (uri.equals("spotify:playlist:5oFH9pWSUhHUOG40c38oyS"))
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_sunflower);
-
-        album_cover.setImageBitmap(bitmap);
+        albumCover.setImageBitmap(bitmap);
 
         home.setOnClickListener(ec);
         search.setOnClickListener(ec);
         pause.setOnClickListener(ec);
         next.setOnClickListener(ec);
         back.setOnClickListener(ec);
+        shuffle.setOnClickListener(ec);
+        replay.setOnClickListener(ec);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         sd.authenticate();
-//        musicInfo();
-//        sd.getmSpotifyAppRemote().getPlayerApi().play(uri);
-        // https://developer.spotify.com/documentation/android/guides/android-media-notifications/ for seeing whats playing rn
     }
 
     @Override
@@ -118,16 +107,34 @@ public class Player extends AppCompatActivity {
                 startActivity(intent);
             }
 
-            if (v == pause){
-                sd.getmSpotifyAppRemote().getPlayerApi().play(uri);
-                control.playPause(playing);
+            if (v  == shuffle){
+                sd.shuffle();
+                if (!shuffled)
+                    shuffle.setImageAlpha(125);
+                else
+                    shuffle.setImageAlpha(255);
+                shuffled = !shuffled;
+            }
+            else if (v == pause){
+                sd.playPause(playing, uri, first);
+                if (!playing)
+                    pause.setImageResource(R.drawable.ic_baseline_play);
+                else
+                    pause.setImageResource(R.drawable.ic_baseline_pause);
                 playing = !playing;
+                first = false;
             }
-            else if (v == next){
-                control.next();
-            }
-            else if (v == back){
-                control.previous();
+            else if (v == next)
+                sd.next();
+            else if (v == back)
+                sd.previous();
+            else if (v == replay) {
+                sd.replay();
+                if (!replayed)
+                    replay.setImageAlpha(125);
+                else
+                    replay.setImageAlpha(255);
+                replayed = !replayed;
             }
         }
     }

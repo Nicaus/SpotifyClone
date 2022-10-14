@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatCallback;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
+import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.ImageUri;
@@ -27,8 +28,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     private SpotifyAppRemote mSpotifyAppRemote;
     private PlayerState playerState;
     private Activity context;
-    private Player player;
-
+    private PlayerApi player;
 
     public SpotifyDiffuseur(Activity context){
         this.context = context;
@@ -68,6 +68,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                         ((Player)context).musicInfo(playerState);
                     }
                 });
+        player = mSpotifyAppRemote.getPlayerApi();
     }
 
     public void disconnect(){
@@ -83,8 +84,35 @@ public class SpotifyDiffuseur extends AppCompatActivity {
         return mSpotifyAppRemote;
     }
 
-    //SET
-    public void setPlayerState(PlayerState playerState) {
-        this.playerState = playerState;
+    //METHODES
+    public void shuffle(){
+        player.toggleShuffle();
+    }
+
+    public void replay(){
+        player.toggleRepeat();
+        player.setRepeat(1);
+    }
+
+    public void playPause(boolean b, String uri, boolean first){
+        if (first)
+            player.play(uri);
+        else if (b) {
+            player.resume();
+        } else {
+            player.pause();
+        }
+    }
+
+    public void next(){
+        player.skipNext();
+    }
+
+    public void previous(){
+        player.skipPrevious();
+    }
+
+    public void seek(long ms){
+        player.seekToRelativePosition(ms);
     }
 }

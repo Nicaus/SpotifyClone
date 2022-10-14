@@ -13,7 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="8"
+        android:layout_weight="15"
         android:backgroundTint="#D1C6B6"
         android:orientation="vertical">
 
@@ -21,81 +21,113 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="25dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
             android:layout_weight="6"
+            android:adjustViewBounds="true"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/albumName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/lemarism_regular"
             android:text="[AlbumName]"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:id="@+id/artistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
             android:fontFamily="@font/lemarism_regular"
             android:text="[ArtistName]"
             android:textAlignment="center"
-            android:textSize="24sp" />
+            android:textSize="36sp" />
 
         <TextView
             android:id="@+id/songName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0"
+            android:layout_marginBottom="15dp"
             android:fontFamily="@font/lemarism_regular"
             android:text="[SongName]"
             android:textAlignment="center"
-            android:textSize="36sp" />
+            android:textSize="30sp" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:baselineAligned="false"
+        android:gravity="center"
         android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/shufflebtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_shuffle" />
 
         <ImageButton
             android:id="@+id/previousbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:backgroundTint="#A8977F"
-            app:srcCompat="@android:drawable/ic_media_previous" />
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00A8977F"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_skip_previous" />
 
         <ImageButton
             android:id="@+id/pausebtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:backgroundTint="#A8977F"
-            app:srcCompat="@android:drawable/ic_media_pause" />
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00A8977F"
+            android:cropToPadding="false"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_pause" />
 
         <ImageButton
             android:id="@+id/nextbtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00A8977F"
+            android:cropToPadding="false"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_skip_next"
+            tools:src="@drawable/ic_baseline_skip_next" />
+
+        <ImageButton
+            android:id="@+id/replaybtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginRight="30dp"
             android:layout_weight="1"
-            android:backgroundTint="#A8977F"
-            app:srcCompat="@android:drawable/ic_media_next" />
+            android:adjustViewBounds="true"
+            android:backgroundTint="#00FFFFFF"
+            android:padding="10dp"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_replay" />
 
     </LinearLayout>
 
@@ -104,6 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:layout_weight="1"
         android:background="@drawable/background"
         android:backgroundTint="#00FFFFFF"
         android:orientation="horizontal">

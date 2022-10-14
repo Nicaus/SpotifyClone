@@ -16,6 +16,8 @@ public class Discover extends AppCompatActivity {
     ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous, home, info, search;
     LinearLayout player;
     String playlistplaying;
+    SpotifyDiffuseur sd;
+    boolean first = true;
 
     public Discover(){}
 
@@ -34,7 +36,7 @@ public class Discover extends AppCompatActivity {
         player = findViewById(R.id.player);
 
         Ecouteur ec = new Ecouteur();
-//        sd = new SpotifyDiffuseur(this);
+        sd = new SpotifyDiffuseur(this);
 
         dianthus.setOnClickListener(ec);
         sunflower.setOnClickListener(ec);
@@ -49,7 +51,7 @@ public class Discover extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-//        sd.authenticate();
+        sd.authenticate();
     }
 
     @Override
@@ -68,17 +70,12 @@ public class Discover extends AppCompatActivity {
                 playlistplaying = "spotify:playlist:5niTVBcBMAezwE2Z65P0ME";
             else if (v == dianthus)
                 playlistplaying = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
-//            sd.getmSpotifyAppRemote().getPlayerApi().play(playlistplaying);
 
-//            if (v == info){
-                Intent intent = new Intent(Discover.this, Player.class);
-                intent.putExtra("uri", playlistplaying);
-//                intent.putExtra("name", name);
-//                intent.putExtra("artist", artist);
-//                intent.putExtra("album", album);
+            first = false;
+            Intent intent = new Intent(Discover.this, Player.class);
+            intent.putExtra("uri", playlistplaying);
+            startActivity(intent);
 
-                startActivity(intent);
-//            }
             /*else*/ if (v == search){
                 Intent intents = new Intent(Discover.this, Search.class);
                 startActivity(intents);
