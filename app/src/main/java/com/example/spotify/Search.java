@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 
 public class Search extends AppCompatActivity {
 
-    ImageButton home, info, search;
+    ImageButton home, info;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

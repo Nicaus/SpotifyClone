@@ -1,5 +1,6 @@
 package com.example.spotify;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,8 +12,6 @@ import androidx.appcompat.app.AppCompatCallback;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
-import com.spotify.android.appremote.api.ImagesApi;
-import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.ImageUri;
@@ -22,73 +21,70 @@ import com.spotify.protocol.types.Track;
 import java.util.Vector;
 
 public class SpotifyDiffuseur extends AppCompatActivity {
-    private String musicInfo, artistInfo, albumInfo;
-    Track tracks;
 
-    public SpotifyDiffuseur(){}
+    private static final String CLIENT_ID = "71e79d50360c4f14adca4221e2bf605b";
+    private static final String REDIRECT_URI = "com.example.spotify://callback";
+    private SpotifyAppRemote mSpotifyAppRemote;
+    private PlayerState playerState;
+    private Activity context;
+    private Player player;
 
-    public void playPause(boolean b, String string, SpotifyAppRemote s){
-        if (!b) {
-            s.getPlayerApi().pause();
-        }
-        else {
-            s.getPlayerApi().play(string);
-        }
+
+    public SpotifyDiffuseur(Activity context){
+        this.context = context;
     }
 
-    public void next(SpotifyAppRemote s){
-        s.getPlayerApi().skipNext();
+    public void authenticate(){
+        ConnectionParams connectionParams =
+                new ConnectionParams.Builder(CLIENT_ID)
+                        .setRedirectUri(REDIRECT_URI)
+                        .showAuthView(true)
+                        .build();
+
+        SpotifyAppRemote.connect(context, connectionParams,
+                new Connector.ConnectionListener() {
+                    public void onConnected(SpotifyAppRemote spotifyAppRemote) {
+                        mSpotifyAppRemote = spotifyAppRemote;
+                        Log.d("MainActivity", "Connected! Yay!");
+                        connected();
+                    }
+
+                    public void onFailure(Throwable throwable) {
+                        Log.e("MyActivity", throwable.getMessage(), throwable);
+                        // Something went wrong when attempting to connect! Handle errors here
+                    }
+                });
     }
 
-    public void previous(SpotifyAppRemote s){
-        s.getPlayerApi().skipPrevious();
+    public void connected() {
+        // Subscribe to PlayerState
+        mSpotifyAppRemote.getPlayerApi()
+                .subscribeToPlayerState()
+                .setEventCallback(playerState -> {
+                    final Track track = playerState.track;
+                    if (track != null) {
+                        Log.d("MainActivity", track.name + " by " + track.artist.name);
+                        this.playerState = playerState;
+                        player.musicInfo();
+                    }
+                });
     }
 
-    public void seek(SpotifyAppRemote s, long pos){
-        s.getPlayerApi().seekTo(pos);
+    public void disconnect(){
+        SpotifyAppRemote.disconnect(mSpotifyAppRemote);
     }
 
-        //GET
-    public CallResult<Bitmap> getAlbumArt(SpotifyAppRemote s, ImageUri albumCover) {
-        return s.getImagesApi().getImage(albumCover);
+    //GET
+    public PlayerState getPlayerState() {
+        return playerState;
     }
 
-    public String getMusicInfo(){
-        return musicInfo;
+    public SpotifyAppRemote getmSpotifyAppRemote() {
+        return mSpotifyAppRemote;
     }
 
-    public String getArtistInfo() {
-        return artistInfo;
+    //SET
+    public void setPlayerState(PlayerState playerState) {
+        this.playerState = playerState;
     }
-
-    public String getAlbumInfo() {
-        return albumInfo;
-    }
-
-
-        //SET
-    public void setMusicInfo(String musicInfo) {
-        this.musicInfo = musicInfo;
-    }
-
-    public void setArtistInfo(String artistInfo) {
-        this.artistInfo = artistInfo;
-    }
-
-    public void setAlbumInfo(String albumInfo) {
-        this.albumInfo = albumInfo;
-    }
-
-
-    public Vector<String> songInfo(){
-
-         return songInfo();
-    }
-
-    public Vector<String> playlistInfo(){
-
-        return playlistInfo();
-    }
-
-
 }

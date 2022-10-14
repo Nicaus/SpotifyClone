@@ -1,13 +1,14 @@
 package com.example.spotify;
 
-public class Songs {
+import com.spotify.android.appremote.api.SpotifyAppRemote;
+
+public class SongInfo {
     private String name, album, artist, playlist;
 
-    public Songs(String name, String album, String artist, String playlist){
+    public SongInfo(String name, String album, String artist){
         this.name = name;
         this.album = album;
         this.artist = artist;
-        this.playlist = playlist;
     }
 
     public String getName() {
@@ -28,5 +29,9 @@ public class Songs {
 
     public void setPlaylist(String playlist) {
         this.playlist = playlist;
+    }
+
+    public void seek(SpotifyAppRemote s, long pos){
+        s.getPlayerApi().seekTo(pos);
     }
 }
