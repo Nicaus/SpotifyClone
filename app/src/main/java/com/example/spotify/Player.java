@@ -98,8 +98,8 @@ public class Player extends AppCompatActivity {
         sd.disconnect();
     }
 
-    public void musicInfo(){
-        SongInfo info = new SongInfo(sd.getPlayerState().track.name, sd.getPlayerState().track.album.name, sd.getPlayerState().track.artist.name);
+    public void musicInfo(PlayerState playerState){
+        SongInfo info = new SongInfo(playerState.track.name, playerState.track.album.name, playerState.track.artist.name);
 
         songText.setText(info.getName());
         artistText.setText(info.getArtist());
@@ -119,16 +119,15 @@ public class Player extends AppCompatActivity {
             }
 
             if (v == pause){
+                sd.getmSpotifyAppRemote().getPlayerApi().play(uri);
                 control.playPause(playing);
                 playing = !playing;
             }
             else if (v == next){
                 control.next();
-                musicInfo();
             }
             else if (v == back){
                 control.previous();
-                musicInfo();
             }
         }
     }

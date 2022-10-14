@@ -65,7 +65,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         this.playerState = playerState;
-                        player.musicInfo();
+                        ((Player)context).musicInfo(playerState);
                     }
                 });
     }
