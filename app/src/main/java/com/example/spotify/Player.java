@@ -25,7 +25,7 @@ public class Player extends AppCompatActivity {
 
     Boolean playing = true, shuffled = false, replayed = false, first = true;
     private String uri = "";
-
+    int test = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +54,7 @@ public class Player extends AppCompatActivity {
         Bundle i = getIntent().getExtras();
         uri = (String) i.get("uri");
         sd = new SpotifyDiffuseur(this);
+        sd.setSeekBar(progress);
 
         //chaque playlist a sa propre image (la fleur fleurise)
         if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
@@ -73,6 +74,7 @@ public class Player extends AppCompatActivity {
         back.setOnClickListener(ec);
         shuffle.setOnClickListener(ec);
         replay.setOnClickListener(ec);
+        progress.setOnSeekBarChangeListener(ec);
     }
 
     @Override
@@ -95,7 +97,7 @@ public class Player extends AppCompatActivity {
         albumText.setText(info.getAlbum());
     }
 
-    public class Ecouteur implements View.OnClickListener {
+    public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
         @Override
         public void onClick(View v) {
             if (v == home){
@@ -136,6 +138,21 @@ public class Player extends AppCompatActivity {
                     replay.setImageAlpha(255);
                 replayed = !replayed;
             }
+        }
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            test = progress;
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            sd.getmSpotifyAppRemote().getPlayerApi().seekTo(test);
         }
     }
 }

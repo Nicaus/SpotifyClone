@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     private PlayerState playerState;
     private Activity context;
     private PlayerApi player;
+    private SeekBar seekBar;
 
     public SpotifyDiffuseur(Activity context){
         this.context = context;
@@ -66,6 +68,9 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         this.playerState = playerState;
                         ((Player)context).musicInfo(playerState);
+                        seekBar.setMax((int) playerState.track.duration);
+                        seekBar.setProgress((int) playerState.playbackPosition); //use date and time every second move it
+//                        seek(seekBar, playerState.playbackPosition);
                     }
                 });
         player = mSpotifyAppRemote.getPlayerApi();
@@ -112,7 +117,11 @@ public class SpotifyDiffuseur extends AppCompatActivity {
         player.skipPrevious();
     }
 
-    public void seek(long ms){
-        player.seekToRelativePosition(ms);
+    public void setSeekBar(SeekBar seekBar) {
+        this.seekBar = seekBar;
+    }
+
+    public SeekBar getSeekBar() {
+        return seekBar;
     }
 }
