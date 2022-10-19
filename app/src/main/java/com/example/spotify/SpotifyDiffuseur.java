@@ -69,7 +69,8 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                         this.playerState = playerState;
                         ((Player)context).musicInfo(playerState);
                         seekBar.setMax((int) playerState.track.duration);
-                        seekBar.setProgress((int) playerState.playbackPosition); //use date and time every second move it
+                        seekBar.setProgress((int) playerState.playbackPosition);
+                        //TODO use date and time every second to move seekBar
 //                        seek(seekBar, playerState.playbackPosition);
                     }
                 });
