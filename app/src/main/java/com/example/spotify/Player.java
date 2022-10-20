@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 
 import com.spotify.protocol.types.PlayerState;
 
-public class Player extends AppCompatActivity {
+public class Player extends AppCompatActivity{
 
     ImageView albumCover;
     ImageButton shuffle, pause, back, next, replay, home, search;
@@ -22,6 +23,8 @@ public class Player extends AppCompatActivity {
     TextView songText, albumText, artistText;
     Bitmap bitmap;
     SpotifyDiffuseur sd;
+    Chronometer chronometer;
+    int tick = 0;
 
     Boolean playing = true, shuffled = false, replayed = false, first = true;
     private String uri = "";
@@ -55,6 +58,7 @@ public class Player extends AppCompatActivity {
         uri = (String) i.get("uri");
         sd = new SpotifyDiffuseur(this);
         sd.setSeekBar(progress);
+        chronometer = new Chronometer(this);
 
         //chaque playlist a sa propre image (la fleur fleurise)
         if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
@@ -97,7 +101,7 @@ public class Player extends AppCompatActivity {
         albumText.setText(info.getAlbum());
     }
 
-    public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
+    public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, Chronometer.OnChronometerTickListener{
         @Override
         public void onClick(View v) {
             if (v == home){
@@ -119,10 +123,15 @@ public class Player extends AppCompatActivity {
             }
             else if (v == pause){
                 sd.playPause(playing, uri, first);
-                if (!playing)
+                if (!playing) {
                     pause.setImageResource(R.drawable.ic_baseline_play);
-                else
+                    chronometer.start();
+                }
+                else {
                     pause.setImageResource(R.drawable.ic_baseline_pause);
+                    chronometer.stop();
+//                    chronometer.
+                }
                 playing = !playing;
                 first = false;
             }
@@ -153,6 +162,13 @@ public class Player extends AppCompatActivity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             sd.getmSpotifyAppRemote().getPlayerApi().seekTo(test);
+        }
+
+
+        @Override
+        public void onChronometerTick(Chronometer chronometer) {
+            sd.getSeekBar().setProgress(tick);
+            tick++;
         }
     }
 }

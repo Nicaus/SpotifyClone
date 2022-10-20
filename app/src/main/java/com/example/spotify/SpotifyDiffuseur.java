@@ -1,26 +1,21 @@
 package com.example.spotify;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.util.Log;
+import android.widget.Chronometer;
 import android.widget.SeekBar;
 
-import androidx.annotation.Nullable;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatCallback;
 
 import com.spotify.android.appremote.api.ConnectionParams;
 import com.spotify.android.appremote.api.Connector;
 import com.spotify.android.appremote.api.PlayerApi;
 import com.spotify.android.appremote.api.SpotifyAppRemote;
-import com.spotify.protocol.client.CallResult;
-import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
-import java.util.Vector;
+import java.util.Calendar;
 
 public class SpotifyDiffuseur extends AppCompatActivity {
 
@@ -31,6 +26,9 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     private Activity context;
     private PlayerApi player;
     private SeekBar seekBar;
+    private Boolean playing;
+    private Calendar calendar;
+    private Chronometer chronometer;
 
     public SpotifyDiffuseur(Activity context){
         this.context = context;
@@ -101,12 +99,17 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     }
 
     public void playPause(boolean b, String uri, boolean first){
-        if (first)
+        if (first) {
             player.play(uri);
+            playing = true;
+        }
         else if (b) {
             player.resume();
+            playing = true;
+
         } else {
             player.pause();
+            playing = false;
         }
     }
 
@@ -116,6 +119,14 @@ public class SpotifyDiffuseur extends AppCompatActivity {
 
     public void previous(){
         player.skipPrevious();
+    }
+
+    public void seekTime(){
+        int time = calendar.get(Calendar.MILLISECOND);
+        while (playing){
+//            chronometer.getOnChronometerTickListener()
+        }
+
     }
 
     public void setSeekBar(SeekBar seekBar) {
