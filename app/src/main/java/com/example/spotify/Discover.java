@@ -17,7 +17,6 @@ public class Discover extends AppCompatActivity {
     LinearLayout player;
     String playlistplaying;
     SpotifyDiffuseur sd;
-    boolean first = true;
 
     public Discover(){}
 
@@ -73,7 +72,6 @@ public class Discover extends AppCompatActivity {
             Intent intent = new Intent(Discover.this, Player.class);
             intent.putExtra("uri", playlistplaying);
 
-            first = false;
             if (v == anemone || v == sunflower || v == cuphea || v == dianthus || v == info) {
                 startActivity(intent);
             }

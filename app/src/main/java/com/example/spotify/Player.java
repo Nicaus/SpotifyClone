@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -58,7 +59,9 @@ public class Player extends AppCompatActivity {
         Bundle i = getIntent().getExtras();
         uri = (String) i.get("uri");
         sd = new SpotifyDiffuseur(this);
+
         pause.setImageResource(R.drawable.ic_baseline_play);
+
         sd.setSeekBar(progress);
 //        chronometer = new Chronometer(this);
 
@@ -102,6 +105,7 @@ public class Player extends AppCompatActivity {
         songText.setText(info.getName());
         artistText.setText(info.getArtist());
         albumText.setText(info.getAlbum());
+        progress.setMax((int) playerState.track.duration / 1000);
     }
 
     public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, Chronometer.OnChronometerTickListener{
@@ -125,22 +129,35 @@ public class Player extends AppCompatActivity {
                 shuffled = !shuffled;
             }
             else if (v == pause){
-                sd.playPause(playing, uri, first);
-                if (playing) {
-                    pause.setImageResource(R.drawable.ic_baseline_pause);
-                    chronometer.start();
+                if (!playing) {
+                    pause.setImageResource(R.drawable.ic_baseline_play);
+                    tick = (int) (chronometer.getBase() - SystemClock.elapsedRealtime());
+                    chronometer.stop();
+                    sd.pauseSong();
                 }
                 else {
-                    pause.setImageResource(R.drawable.ic_baseline_play);
-                    chronometer.stop();
+                    pause.setImageResource(R.drawable.ic_baseline_pause);
+                    chronometer.start();
+                    sd.playSong(uri, first);
+                    first = false;
+                    chronometer.setBase(SystemClock.elapsedRealtime() + tick);
                 }
                 playing = !playing;
-                first = false;
             }
-            else if (v == next)
+            else if (v == next) {
                 sd.next();
-            else if (v == back)
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                progress.setProgress(0);
+                tick = 0;
+            }
+            else if (v == back) {
                 sd.previous();
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                progress.setProgress(0);
+                tick = 0;
+            }
             else if (v == replay) {
                 sd.replay(replayed);
                 if (replayed)
@@ -153,7 +170,7 @@ public class Player extends AppCompatActivity {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            test = progress;
+            test = progress * 1000;
         }
 
         @Override
@@ -164,11 +181,15 @@ public class Player extends AppCompatActivity {
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
             sd.getmSpotifyAppRemote().getPlayerApi().seekTo(test);
+            progress.setProgress(test / 1000);
+            chronometer.setBase(SystemClock.elapsedRealtime() + (test / 1000));
         }
 
         @Override
         public void onChronometerTick(Chronometer chronometer) {
-            sd.seekProgress();
+//            sd.seekProgress();
+            progress.setProgress(tick);
+            tick++;
         }
     }
 }

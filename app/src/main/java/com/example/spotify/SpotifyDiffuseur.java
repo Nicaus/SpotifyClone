@@ -67,7 +67,6 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                         Log.d("TAG", String.valueOf(playerState.playbackPosition));
 
                         ((Player)context).musicInfo(playerState);
-                        seekBar.setMax((int) playerState.track.duration);
 //                        seekBar.setProgress((int) playerState.playbackPosition);
                         //TODO use date and time every second to move seekBar
                     }
@@ -90,7 +89,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
 
     //METHODES
     public void shuffle(boolean b){
-        player.setShuffle(b);
+        player.setShuffle(!b);
     }
 
     public void replay(boolean b){
@@ -100,19 +99,15 @@ public class SpotifyDiffuseur extends AppCompatActivity {
             player.setRepeat(0);
     }
 
-    public void playPause(boolean b, String uri, boolean first){
-        if (b && first) {
+    public void playSong(String uri, boolean first){
+        if (first)
             player.play(uri);
-            playing = true;
-        }
-        else if (!b) {
+        else
             player.resume();
-            playing = true;
+    }
 
-        } else {
-            player.pause();
-            playing = false;
-        }
+    public void pauseSong(){
+        player.pause();
     }
 
     public void next(){
