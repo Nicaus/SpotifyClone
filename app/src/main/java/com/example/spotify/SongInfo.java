@@ -22,8 +22,4 @@ public class SongInfo {
     public String getArtist() {
         return artist;
     }
-
-    public void seek(SpotifyAppRemote s, long pos){
-        s.getPlayerApi().seekTo(pos);
-    }
 }

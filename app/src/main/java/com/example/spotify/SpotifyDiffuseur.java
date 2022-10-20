@@ -28,7 +28,6 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     private SeekBar seekBar;
     private Boolean playing;
     private Calendar calendar;
-    private Chronometer chronometer;
 
     public SpotifyDiffuseur(Activity context){
         this.context = context;
@@ -65,11 +64,12 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                     if (track != null) {
                         Log.d("MainActivity", track.name + " by " + track.artist.name);
                         this.playerState = playerState;
+                        Log.d("TAG", String.valueOf(playerState.playbackPosition));
+
                         ((Player)context).musicInfo(playerState);
                         seekBar.setMax((int) playerState.track.duration);
-                        seekBar.setProgress((int) playerState.playbackPosition);
+//                        seekBar.setProgress((int) playerState.playbackPosition);
                         //TODO use date and time every second to move seekBar
-//                        seek(seekBar, playerState.playbackPosition);
                     }
                 });
         player = mSpotifyAppRemote.getPlayerApi();
@@ -89,21 +89,23 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     }
 
     //METHODES
-    public void shuffle(){
-        player.toggleShuffle();
+    public void shuffle(boolean b){
+        player.setShuffle(b);
     }
 
-    public void replay(){
-        player.toggleRepeat();
-        player.setRepeat(1);
+    public void replay(boolean b){
+        if (b)
+            player.setRepeat(1);
+        else
+            player.setRepeat(0);
     }
 
     public void playPause(boolean b, String uri, boolean first){
-        if (first) {
+        if (b && first) {
             player.play(uri);
             playing = true;
         }
-        else if (b) {
+        else if (!b) {
             player.resume();
             playing = true;
 
@@ -115,18 +117,16 @@ public class SpotifyDiffuseur extends AppCompatActivity {
 
     public void next(){
         player.skipNext();
+        seekBar.setProgress(0);
     }
 
     public void previous(){
         player.skipPrevious();
+        seekBar.setProgress(0);
     }
 
-    public void seekTime(){
-        int time = calendar.get(Calendar.MILLISECOND);
-        while (playing){
-//            chronometer.getOnChronometerTickListener()
-        }
-
+    public void seekProgress(){
+        seekBar.setProgress((int) playerState.playbackPosition);
     }
 
     public void setSeekBar(SeekBar seekBar) {

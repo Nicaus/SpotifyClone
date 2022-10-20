@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:layout_weight="6"
@@ -28,38 +28,50 @@
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/albumName"
+            android:id="@+id/songName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginStart="15sp"
             android:fontFamily="@font/lemarism_regular"
-            android:text="[AlbumName]"
-            android:textAlignment="center"
-            android:textSize="30sp" />
+            android:textAlignment="viewStart"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            tools:text="[songName]" />
 
         <TextView
             android:id="@+id/artistName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="15sp"
             android:fontFamily="@font/lemarism_regular"
-            android:text="[ArtistName]"
-            android:textAlignment="center"
-            android:textSize="36sp" />
+            android:textAlignment="viewStart"
+            android:textSize="25sp"
+            tools:text="[artistName]" />
 
         <TextView
-            android:id="@+id/songName"
+            android:id="@+id/albumName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginStart="15sp"
             android:fontFamily="@font/lemarism_regular"
-            android:text="[SongName]"
-            android:textAlignment="center"
-            android:textSize="30sp" />
+            android:textAlignment="viewStart"
+            android:textSize="20sp"
+            tools:text="[albumName}" />
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+        <Chronometer
+            android:id="@+id/simpleChronometer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15sp"
+            android:fontFamily="@font/lemarism_regular"
+            android:textAlignment="viewStart"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout

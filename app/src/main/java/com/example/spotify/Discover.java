@@ -43,7 +43,6 @@ public class Discover extends AppCompatActivity {
         cuphea.setOnClickListener(ec);
         anemone.setOnClickListener(ec);
 
-        home.setOnClickListener(ec);
         info.setOnClickListener(ec);
         search.setOnClickListener(ec);
     }
@@ -71,12 +70,15 @@ public class Discover extends AppCompatActivity {
             else if (v == dianthus)
                 playlistplaying = "spotify:playlist:7cvdecpZEUhshkB1PjImoa";
 
-            first = false;
             Intent intent = new Intent(Discover.this, Player.class);
             intent.putExtra("uri", playlistplaying);
-            startActivity(intent);
 
-            /*else*/ if (v == search){
+            first = false;
+            if (v == anemone || v == sunflower || v == cuphea || v == dianthus || v == info) {
+                startActivity(intent);
+            }
+
+            if (v == search){
                 Intent intents = new Intent(Discover.this, Search.class);
                 startActivity(intents);
             }
