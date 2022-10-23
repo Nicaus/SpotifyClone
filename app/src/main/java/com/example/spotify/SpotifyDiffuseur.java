@@ -46,6 +46,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                         mSpotifyAppRemote = spotifyAppRemote;
                         Log.d("MainActivity", "Connected! Yay!");
                         connected();
+                        player.pause();
                     }
 
                     public void onFailure(Throwable throwable) {
@@ -67,8 +68,6 @@ public class SpotifyDiffuseur extends AppCompatActivity {
                         Log.d("TAG", String.valueOf(playerState.playbackPosition));
 
                         ((Player)context).musicInfo(playerState);
-//                        seekBar.setProgress((int) playerState.playbackPosition);
-                        //TODO use date and time every second to move seekBar
                     }
                 });
         player = mSpotifyAppRemote.getPlayerApi();
@@ -120,15 +119,7 @@ public class SpotifyDiffuseur extends AppCompatActivity {
         seekBar.setProgress(0);
     }
 
-    public void seekProgress(){
-        seekBar.setProgress((int) playerState.playbackPosition);
-    }
-
     public void setSeekBar(SeekBar seekBar) {
         this.seekBar = seekBar;
-    }
-
-    public SeekBar getSeekBar() {
-        return seekBar;
     }
 }

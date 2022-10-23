@@ -26,10 +26,11 @@ public class Player extends AppCompatActivity {
     SpotifyDiffuseur sd;
     Chronometer chronometer;
     int tick = 0;
+    long max = 0, lasttick = 0;
 
     Boolean playing = true, shuffled = false, replayed = false, first = true;
     private String uri = "";
-    int test = 0;
+    long ms = 0, s = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +97,13 @@ public class Player extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        sd.pauseSong();
         sd.disconnect();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     public void musicInfo(PlayerState playerState){
@@ -105,7 +112,8 @@ public class Player extends AppCompatActivity {
         songText.setText(info.getName());
         artistText.setText(info.getArtist());
         albumText.setText(info.getAlbum());
-        progress.setMax((int) playerState.track.duration / 1000);
+        max = playerState.track.duration / 1000;
+        progress.setMax((int) max);
     }
 
     public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, Chronometer.OnChronometerTickListener{
@@ -170,7 +178,8 @@ public class Player extends AppCompatActivity {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            test = progress * 1000;
+            ms = progress * 1000;
+            s = progress;
         }
 
         @Override
@@ -180,16 +189,22 @@ public class Player extends AppCompatActivity {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            sd.getmSpotifyAppRemote().getPlayerApi().seekTo(test);
-            progress.setProgress(test / 1000);
-            chronometer.setBase(SystemClock.elapsedRealtime() + (test / 1000));
+            sd.getmSpotifyAppRemote().getPlayerApi().seekTo(ms);
+            chronometer.setBase(SystemClock.elapsedRealtime() - (ms));
+            chronometer.start();
         }
 
         @Override
         public void onChronometerTick(Chronometer chronometer) {
-//            sd.seekProgress();
-            progress.setProgress(tick);
-            tick++;
+            progress.setProgress((int)s);
+            s++;
+
+            if (progress.getMax() == s) {
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                chronometer.start();
+                progress.setProgress(0);
+                tick = 0;
+            }
         }
     }
 }
