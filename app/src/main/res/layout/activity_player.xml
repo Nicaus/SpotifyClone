@@ -166,18 +166,6 @@
             app:srcCompat="@drawable/home" />
 
         <ImageButton
-            android:id="@+id/infoP"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:backgroundTint="#00FFFFFF"
-            android:maxWidth="75dp"
-            android:maxHeight="75dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/music" />
-
-        <ImageButton
             android:id="@+id/historyP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

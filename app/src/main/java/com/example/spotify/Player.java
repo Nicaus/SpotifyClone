@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -17,7 +16,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.spotify.android.appremote.api.ImagesApi;
-import com.spotify.protocol.types.ImageUri;
+import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.PlayerState;
 
 import java.io.BufferedWriter;
@@ -34,6 +33,7 @@ public class Player extends AppCompatActivity {
     Bitmap bitmap;
     SpotifyDiffuseur sd;
     Chronometer chronometer;
+    String ligne = "";
     ImagesApi imageUri;
 
     int tick = 0, hcount = 0;
@@ -77,7 +77,6 @@ public class Player extends AppCompatActivity {
         sd.setSeekBar(progress);
 
         //chaque playlist a sa propre image (la fleur fleurise)
-        //TODO put in Discover so that it doesnt loose the image
         if (uri == null)
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.home);
         else if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
@@ -119,6 +118,7 @@ public class Player extends AppCompatActivity {
     public void musicInfo(PlayerState playerState){
         SongInfo info = new SongInfo(playerState.track.name, playerState.track.album.name, playerState.track.artist.name);
         BufferedWriter br = null;
+        String newLine = info.getName() + ";" + info.getArtist() + ";" + info.getAlbum();
 
         songText.setText(info.getName());
         artistText.setText(info.getArtist());
@@ -126,21 +126,34 @@ public class Player extends AppCompatActivity {
         max = playerState.track.duration / 1000;
         progress.setMax((int) max);
 
-        if (!(info.getArtist().equals("null"))) {
-            try {
-                FileOutputStream fos = openFileOutput("history.txt", Context.MODE_APPEND);
-                OutputStreamWriter osw = new OutputStreamWriter(fos);
-                br = new BufferedWriter(osw);
-                br.write(info.getName() + ", " + info.getArtist() + ", " + info.getAlbum());
-                br.newLine();
+        // jaurais aimé mettre l'image de la chanson, mais je perds le theme,
+        // le code est la et il est fonctionnel
+        CallResult<Bitmap> imagesAlbum = sd.getmSpotifyAppRemote().getImagesApi().getImage(sd.getPlayerState().track.imageUri);
+        imagesAlbum.setResultCallback(new CallResult.ResultCallback<Bitmap>() {
+            @Override
+            public void onResult(Bitmap data) {
+                if (uri == null)
+                    albumCover.setImageBitmap(data);
+            }
+        });
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
+        if (!(info.getArtist().equals("null"))) {
+            if (ligne.isEmpty() || !ligne.equals(newLine)) {
                 try {
-                    br.close();
-                } catch (IOException e) {
+                    FileOutputStream fos = openFileOutput("history.txt", Context.MODE_APPEND);
+                    OutputStreamWriter osw = new OutputStreamWriter(fos);
+                    br = new BufferedWriter(osw);
+                    br.write(newLine);
+                    br.newLine();
+                    ligne = newLine;
+                } catch (Exception e) {
                     e.printStackTrace();
+                } finally {
+                    try {
+                        br.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }

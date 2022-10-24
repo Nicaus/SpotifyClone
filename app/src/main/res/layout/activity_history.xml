@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="6"
-    android:background="#FFFFFF"
+    android:background="#d1c6b6"
     android:backgroundTint="#D1C6B6"
     android:configChanges="keyboardHidden|orientation|screenSize"
     android:orientation="vertical"
@@ -25,7 +25,7 @@
     <ListView
         android:id="@+id/liste"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="5" />
 
     <LinearLayout
@@ -33,8 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:background="#FFFFFF"
-        android:backgroundTint="#D1C6B6"
+        android:background="#d1c6b6"
+        android:backgroundTint="#d1c6b6"
         android:orientation="horizontal">
 
         <ImageButton
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:backgroundTint="#00FFFFFF"
+            android:backgroundTint="#d1c6b6"
             android:maxWidth="75dp"
             android:maxHeight="75dp"
             android:scaleType="fitCenter"
@@ -55,23 +55,11 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:backgroundTint="#00FFFFFF"
+            android:backgroundTint="#d1c6b6"
             android:maxWidth="75dp"
             android:maxHeight="75dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/music" />
-
-        <ImageButton
-            android:id="@+id/searchS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:backgroundTint="#00FFFFFF"
-            android:maxWidth="75dp"
-            android:maxHeight="75dp"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/search" />
 
     </LinearLayout>
 </LinearLayout>

@@ -53,7 +53,7 @@ public class History extends AppCompatActivity {
             Scanner scanner = new Scanner(isr);
 
             while(scanner.hasNext()){
-                scanner.useDelimiter("[,\\r]");
+                scanner.useDelimiter("[;\\n\\r]");
                 hash = new Hashtable<>();
                 hash.put("song", scanner.next());
                 hash.put("artist", scanner.next());
