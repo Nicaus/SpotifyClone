@@ -2,18 +2,15 @@ package com.example.spotify;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.spotify.protocol.types.Track;
-
 public class Discover extends AppCompatActivity {
 
-    ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous, home, info, search;
+    ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous, home, info, history;
     LinearLayout player;
     String playlistplaying;
     SpotifyDiffuseur sd;
@@ -31,7 +28,7 @@ public class Discover extends AppCompatActivity {
 
         home = findViewById(R.id.discoverD);
         info = findViewById(R.id.infoD);
-        search = findViewById(R.id.searchD);
+        history = findViewById(R.id.historyD);
         player = findViewById(R.id.player);
 
         Ecouteur ec = new Ecouteur();
@@ -43,13 +40,12 @@ public class Discover extends AppCompatActivity {
         anemone.setOnClickListener(ec);
 
         info.setOnClickListener(ec);
-        search.setOnClickListener(ec);
+        history.setOnClickListener(ec);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        sd.authenticate();
     }
 
     @Override
@@ -76,8 +72,8 @@ public class Discover extends AppCompatActivity {
                 startActivity(intent);
             }
 
-            if (v == search){
-                Intent intents = new Intent(Discover.this, Search.class);
+            if (v == history){
+                Intent intents = new Intent(Discover.this, History.class);
                 startActivity(intents);
             }
         }

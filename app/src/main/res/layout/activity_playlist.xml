@@ -44,7 +44,7 @@
             app:srcCompat="@drawable/music" />
 
         <ImageButton
-            android:id="@+id/searchD"
+            android:id="@+id/historyD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

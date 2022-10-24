@@ -2,11 +2,13 @@ package com.example.spotify;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -14,21 +16,30 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.spotify.android.appremote.api.ImagesApi;
+import com.spotify.protocol.types.ImageUri;
 import com.spotify.protocol.types.PlayerState;
+
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 public class Player extends AppCompatActivity {
 
     ImageView albumCover;
-    ImageButton shuffle, pause, back, next, replay, home, search;
+    ImageButton shuffle, pause, back, next, replay, home, history;
     SeekBar progress;
     TextView songText, albumText, artistText;
     Bitmap bitmap;
     SpotifyDiffuseur sd;
     Chronometer chronometer;
-    int tick = 0;
+    ImagesApi imageUri;
+
+    int tick = 0, hcount = 0;
     long max = 0, lasttick = 0;
 
-    Boolean playing = true, shuffled = false, replayed = false, first = true;
+    Boolean playing = true, shuffled = false, replayed = false, first;
     private String uri = "";
     long ms = 0, s = 0;
 
@@ -53,32 +64,35 @@ public class Player extends AppCompatActivity {
 
         //nav bar
         home = findViewById(R.id.discoverP);
-        search = findViewById(R.id.searchP);
+        history = findViewById(R.id.historyP);
         progress = findViewById(R.id.seekBar);
 
         Ecouteur ec = new Ecouteur();
         Bundle i = getIntent().getExtras();
         uri = (String) i.get("uri");
         sd = new SpotifyDiffuseur(this);
+        first = true;
 
         pause.setImageResource(R.drawable.ic_baseline_play);
-
         sd.setSeekBar(progress);
-//        chronometer = new Chronometer(this);
 
         //chaque playlist a sa propre image (la fleur fleurise)
-        if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
+        //TODO put in Discover so that it doesnt loose the image
+        if (uri == null)
+            bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.home);
+        else if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_anemone);
-        if (uri.equals("spotify:playlist:5niTVBcBMAezwE2Z65P0ME"))
+        else if (uri.equals("spotify:playlist:5niTVBcBMAezwE2Z65P0ME"))
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_cuphea);
-        if (uri.equals("spotify:playlist:7cvdecpZEUhshkB1PjImoa"))
+        else if (uri.equals("spotify:playlist:7cvdecpZEUhshkB1PjImoa"))
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_dianthus);
-        if (uri.equals("spotify:playlist:5oFH9pWSUhHUOG40c38oyS"))
+        else if (uri.equals("spotify:playlist:5oFH9pWSUhHUOG40c38oyS"))
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_sunflower);
+
         albumCover.setImageBitmap(bitmap);
 
         home.setOnClickListener(ec);
-        search.setOnClickListener(ec);
+        history.setOnClickListener(ec);
         pause.setOnClickListener(ec);
         next.setOnClickListener(ec);
         back.setOnClickListener(ec);
@@ -97,34 +111,53 @@ public class Player extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        first = true;
         sd.pauseSong();
         sd.disconnect();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
     public void musicInfo(PlayerState playerState){
         SongInfo info = new SongInfo(playerState.track.name, playerState.track.album.name, playerState.track.artist.name);
+        BufferedWriter br = null;
 
         songText.setText(info.getName());
         artistText.setText(info.getArtist());
         albumText.setText(info.getAlbum());
         max = playerState.track.duration / 1000;
         progress.setMax((int) max);
+
+        if (!(info.getArtist().equals("null"))) {
+            try {
+                FileOutputStream fos = openFileOutput("history.txt", Context.MODE_APPEND);
+                OutputStreamWriter osw = new OutputStreamWriter(fos);
+                br = new BufferedWriter(osw);
+                br.write(info.getName() + ", " + info.getArtist() + ", " + info.getAlbum());
+                br.newLine();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
+
+
 
     public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, Chronometer.OnChronometerTickListener{
         @Override
         public void onClick(View v) {
             if (v == home){
                 Intent intent = new Intent(Player.this, Discover.class);
+                intent.putExtra("uri", "");
                 startActivity(intent);
             }
-            else if (v == search){
-                Intent intent = new Intent(Player.this, Search.class);
+            else if (v == history){
+                Intent intent = new Intent(Player.this, History.class);
                 startActivity(intent);
             }
 
