@@ -10,7 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Spotify">
         <activity android:name=".History" />
-        <activity android:name=".Playlist" />
         <activity android:name=".Player" />
         <activity android:name=".Discover" android:exported="true">
             <intent-filter>

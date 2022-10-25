@@ -29,8 +29,11 @@ public class History extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
+        // nav bar
         home = findViewById(R.id.discoverS);
         info = findViewById(R.id.infoS);
+
+        //info chanson
         song = findViewById(R.id.songText);
         artist = findViewById(R.id.artistText);
         album = findViewById(R.id.albumText);

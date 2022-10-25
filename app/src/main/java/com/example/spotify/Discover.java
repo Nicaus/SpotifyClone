@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Discover extends AppCompatActivity {
 
-    ImageButton dianthus, sunflower, cuphea, anemone, pause, next, previous, home, info, history;
+    ImageButton dianthus, sunflower, cuphea, anemone, info, history;
     LinearLayout player;
     String playlistplaying;
     SpotifyDiffuseur sd;
@@ -21,12 +21,12 @@ public class Discover extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
 
+        // les fleur represente des playlists
         dianthus = findViewById(R.id.dianthus);
         sunflower = findViewById(R.id.sunflower);
         cuphea = findViewById(R.id.cuphea);
         anemone = findViewById(R.id.anemone);
 
-        home = findViewById(R.id.discoverD);
         info = findViewById(R.id.infoD);
         history = findViewById(R.id.historyD);
         player = findViewById(R.id.player);

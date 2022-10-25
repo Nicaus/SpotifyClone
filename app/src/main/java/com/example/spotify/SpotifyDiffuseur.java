@@ -2,9 +2,7 @@ package com.example.spotify;
 
 import android.app.Activity;
 import android.util.Log;
-import android.widget.Chronometer;
 import android.widget.SeekBar;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,8 +13,6 @@ import com.spotify.android.appremote.api.SpotifyAppRemote;
 import com.spotify.protocol.types.PlayerState;
 import com.spotify.protocol.types.Track;
 
-import java.util.Calendar;
-
 public class SpotifyDiffuseur extends AppCompatActivity {
 
     private static final String CLIENT_ID = "71e79d50360c4f14adca4221e2bf605b";
@@ -26,8 +22,6 @@ public class SpotifyDiffuseur extends AppCompatActivity {
     private Activity context;
     private PlayerApi player;
     private SeekBar seekBar;
-    private Boolean playing;
-    private Calendar calendar;
 
     public SpotifyDiffuseur(Activity context){
         this.context = context;

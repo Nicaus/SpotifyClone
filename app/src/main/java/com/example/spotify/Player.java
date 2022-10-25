@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.spotify.android.appremote.api.ImagesApi;
 import com.spotify.protocol.client.CallResult;
 import com.spotify.protocol.types.PlayerState;
 
@@ -34,10 +33,9 @@ public class Player extends AppCompatActivity {
     SpotifyDiffuseur sd;
     Chronometer chronometer;
     String ligne = "";
-    ImagesApi imageUri;
 
-    int tick = 0, hcount = 0;
-    long max = 0, lasttick = 0;
+    int tick = 0;
+    long max = 0;
 
     Boolean playing = true, shuffled = false, replayed = false, first;
     private String uri = "";
@@ -76,7 +74,7 @@ public class Player extends AppCompatActivity {
         pause.setImageResource(R.drawable.ic_baseline_play);
         sd.setSeekBar(progress);
 
-        //chaque playlist a sa propre image (la fleur fleurise)
+        //chaque playlist a sa propre image (la fleur fleurise) remplace l'art de l'album
         if (uri == null)
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.home);
         else if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
@@ -128,6 +126,7 @@ public class Player extends AppCompatActivity {
 
         // jaurais aimé mettre l'image de la chanson, mais je perds le theme,
         // le code est la et il est fonctionnel
+        // je l'utilise quand on perds l'image de la fleur
         CallResult<Bitmap> imagesAlbum = sd.getmSpotifyAppRemote().getImagesApi().getImage(sd.getPlayerState().track.imageUri);
         imagesAlbum.setResultCallback(new CallResult.ResultCallback<Bitmap>() {
             @Override
@@ -137,6 +136,7 @@ public class Player extends AppCompatActivity {
             }
         });
 
+        // crée le fichier pour l'historique
         if (!(info.getArtist().equals("null"))) {
             if (ligne.isEmpty() || !ligne.equals(newLine)) {
                 try {
@@ -158,8 +158,6 @@ public class Player extends AppCompatActivity {
             }
         }
     }
-
-
 
     public class Ecouteur implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, Chronometer.OnChronometerTickListener{
         @Override
@@ -188,8 +186,7 @@ public class Player extends AppCompatActivity {
                     tick = (int) (chronometer.getBase() - SystemClock.elapsedRealtime());
                     chronometer.stop();
                     sd.pauseSong();
-                }
-                else {
+                } else {
                     pause.setImageResource(R.drawable.ic_baseline_pause);
                     chronometer.start();
                     sd.playSong(uri, first);
@@ -197,22 +194,19 @@ public class Player extends AppCompatActivity {
                     chronometer.setBase(SystemClock.elapsedRealtime() + tick);
                 }
                 playing = !playing;
-            }
-            else if (v == next) {
+            } else if (v == next) {
                 sd.next();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
                 progress.setProgress(0);
                 tick = 0;
-            }
-            else if (v == back) {
+            } else if (v == back) {
                 sd.previous();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
                 progress.setProgress(0);
                 tick = 0;
-            }
-            else if (v == replay) {
+            } else if (v == replay) {
                 sd.replay(replayed);
                 if (replayed)
                     replay.setImageAlpha(125);
