@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="6"
+    android:layout_height="match_parent"
     android:background="#d1c6b6"
     android:backgroundTint="#D1C6B6"
     android:configChanges="keyboardHidden|orientation|screenSize"
@@ -14,19 +13,20 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15sp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fontFamily="@font/lemarism_regular"
         android:text="History"
         android:textAlignment="center"
         android:textColor="#523d2a"
-        android:textSize="100sp" />
+        android:textSize="80dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginLeft="15sp"
         android:layout_marginRight="15sp"
+        android:layout_weight=".5"
         android:orientation="horizontal">
 
         <TextView
@@ -53,39 +53,39 @@
     <ListView
         android:id="@+id/liste"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5" />
+        android:layout_height="0dp"
+        android:layout_weight="5.5" />
 
     <LinearLayout
         android:id="@+id/player"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="#d1c6b6"
         android:backgroundTint="#d1c6b6"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/discoverS"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:backgroundTint="#d1c6b6"
-            android:maxWidth="75dp"
-            android:maxHeight="75dp"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/home" />
 
         <ImageButton
             android:id="@+id/infoS"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:backgroundTint="#d1c6b6"
-            android:maxWidth="75dp"
-            android:maxHeight="75dp"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/music" />
 

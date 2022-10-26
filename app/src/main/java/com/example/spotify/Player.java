@@ -28,7 +28,7 @@ public class Player extends AppCompatActivity {
     ImageView albumCover;
     ImageButton shuffle, pause, back, next, replay, home, history;
     SeekBar progress;
-    TextView songText, albumText, artistText;
+    TextView songText, albumText, artistText, playlistText;
     Bitmap bitmap;
     SpotifyDiffuseur sd;
     Chronometer chronometer;
@@ -54,6 +54,7 @@ public class Player extends AppCompatActivity {
         replay = findViewById(R.id.replaybtn);
 
         //info sur la chanson
+        playlistText = findViewById(R.id.playlistName);
         albumCover = findViewById(R.id.imageView);
         songText = findViewById(R.id.songName);
         albumText = findViewById(R.id.albumName);
@@ -77,14 +78,22 @@ public class Player extends AppCompatActivity {
         //chaque playlist a sa propre image (la fleur fleurise) remplace l'art de l'album
         if (uri == null)
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.home);
-        else if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR"))
+        else if (uri.equals("spotify:playlist:1hDlM5sdPdYYEcFonmPyZR")) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_anemone);
-        else if (uri.equals("spotify:playlist:5niTVBcBMAezwE2Z65P0ME"))
+            playlistText.setText("Anemone");
+        }
+        else if (uri.equals("spotify:playlist:5niTVBcBMAezwE2Z65P0ME")) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_cuphea);
-        else if (uri.equals("spotify:playlist:7cvdecpZEUhshkB1PjImoa"))
+            playlistText.setText("Cuphea");
+        }
+        else if (uri.equals("spotify:playlist:7cvdecpZEUhshkB1PjImoa")) {
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_dianthus);
-        else if (uri.equals("spotify:playlist:5oFH9pWSUhHUOG40c38oyS"))
+            playlistText.setText("Dianthus");
+        }
+        else if (uri.equals("spotify:playlist:5oFH9pWSUhHUOG40c38oyS")){
             bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.o_sunflower);
+            playlistText.setText("Sunflower");
+        }
 
         albumCover.setImageBitmap(bitmap);
 
